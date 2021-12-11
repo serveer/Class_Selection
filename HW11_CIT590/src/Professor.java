@@ -44,11 +44,46 @@ public class Professor extends User {
 		while (!ifExit(id)) {
 			//course of interest
 			Course c=Course.findCourse(id);
-			//withdraw course to stuCourses
-			profCourses.remove(c);
+			if (checkExists(c)) {
+				//withdraw course to stuCourses
+				profCourses.remove(c);
+			}else {
+				System.out.println("Course not in list. ");
+			}
 			//get next input
 			System.out.println("Please select course id to wtihdraw or enter 'q' to quit");
 			id=input.next();
 		}
+	}
+	public static Professor login(ArrayList<Professor> userList,String username,String password) {
+		for (Professor p:userList){
+			if (p.getUsername().contentEquals(username)&&p.getPassword().contentEquals(password))
+				return p;
+		}
+		System.out.println("Wrong username or password");
+		return null;
+	}
+	/**
+	 * 
+	 * @param name of prof
+	 * @return prof object
+	 */
+	public static Professor findProf(String name) {
+		for (Professor p:Controller.allProfList){
+			if (p.getName().contentEquals(name))
+				return p;
+		}
+		return null;
+	}
+	/**
+	 * check if course is in courselist prof teaches
+	 */
+	public boolean checkExists(Course course) {
+		for (Course c:profCourses.keySet()) {
+			if (course.equals(c)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

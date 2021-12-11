@@ -3,12 +3,16 @@ import java.util.*;
 public class Student extends User {
 	private static Scanner input = new Scanner(System.in);
 	public Map <Course,String> stuCourses= new HashMap<Course,String>();
-	public Student(String name, int id, String username, String password) {
+	public Student(String name, int id, String username, String password, Map <Course,String> stuCourses) {
 		super(name, id, username, password);
+		this.stuCourses=stuCourses;
 	}
 	public Map <Course,String> getStuCourses(){
 		return stuCourses;
 	}
+	/**
+	 * page for student to pick options
+	 */
 	public void optionPage() {
 		System.out.println("1.view all courses");
 		System.out.println("2.Add courses to your list");
@@ -66,13 +70,17 @@ public class Student extends User {
 		}
 	}
 	/**
-	 * 
+	 * print all information about this student's enrolled courses
 	 */
 	public void viewStuCourses() {
 		for (Course c:stuCourses.keySet()) {
     		c.getAllInfo();
     	}
 	}
+	/**
+	 * print all student's enrolled courses and get their course id
+	 * @return
+	 */
 	public String pickClass() {
 		System.out.println("The courses in your list: ");
 		viewStuCourses();
@@ -95,12 +103,22 @@ public class Student extends User {
 			id=input.next();
 		}
 	}
+	/**
+	 * view all student courses and their grades
+	 */
 	public void viewGrades() {
 		for (Course c:stuCourses.keySet()) {
 			System.out.println("Here are the courses you've taken, with your grades in letter format.");
 			System.out.print("Grade of "+c.getID()+c.getCourseName()+": "+stuCourses.get(c));
     	}
 	}
+	/**
+	 * student login check
+	 * @param userList
+	 * @param username
+	 * @param password
+	 * @return student object
+	 */
 	public static Student login(ArrayList<Student> userList,String username,String password) {
 		for (Student s:userList){
 			if (s.getUsername().contentEquals(username)&&s.getPassword().contentEquals(password))
@@ -109,4 +127,15 @@ public class Student extends User {
 		System.out.println("Wrong username or password");
 		return null;
 	} 
+	/**
+	 * check if course is in student enrolled courses
+	 */
+	public boolean checkExists(Course course) {
+		for (Course c:stuCourses.keySet()) {
+			if (course.equals(c)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

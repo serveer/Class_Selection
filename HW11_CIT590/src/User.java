@@ -27,15 +27,6 @@ public abstract class User {
 		optionPage();
 	};
 	
-	public static User login(ArrayList<User> userList,String username,String password) {
-		for (User user:userList){
-			if (user.username.contentEquals(username)&&user.password.contentEquals(password))
-				return user;
-		}
-		System.out.println("Wrong username or password");
-		return null;
-	} 
-	
 	public void viewAllCourses() {
 		for (Course cour:Controller.allCourseList) {
 			System.out.println(cour.getAllInfo());
@@ -49,6 +40,13 @@ public abstract class User {
 		return false;
 	}
 	
-	
+	public boolean checkExists(Course course) {
+		for (Course c:Controller.allCourseList) {
+			if (course.equals(c)) {
+				return true;
+			}
+		}
+		return false;
+	}
 	
 }

@@ -9,26 +9,13 @@ public class Controller {
 	public static ArrayList<Professor> allProfList=new ArrayList<Professor>();
 	public static ArrayList<Admin> allAdminList=new ArrayList<Admin>();
 	public static void main(String[] args) {
-		
-		int userType=loginpage();
-		while (true) {
-			switch(userType){
-			case 1:
-				studentLogin();
-			case 2:
-				profLogin();
-			case 3:
-				adminLogin();
-			case 4:
-				break;
-			}
-		}
+		loginpage();
 	}
 	/**
 	 * print login options for user
 	 * @return user option
 	 */
-	public static int loginpage() {
+	public static void loginpage() {
 		System.out.println("Choose number?");
 		System.out.println("1.---Login as a student");
 		System.out.println("2.---Login as a professor");
@@ -36,7 +23,17 @@ public class Controller {
 		System.out.println("4.---Quit system");
 		System.out.println();
 		System.out.println("Please enter your option, eg. '1'.");
-		return Integer.parseInt(input.next());
+		int userType= Integer.parseInt(input.next());
+		switch(userType){
+			case 1:
+				studentLogin();
+			case 2:
+				profLogin();
+			case 3:
+				adminLogin();
+			case 4:
+				System.exit(0);
+		}
 	}
 	/**
 	 * login to student profile
@@ -59,7 +56,7 @@ public class Controller {
     	String username = input.next();
     	System.out.println("password: ");
     	String password = input.next();
-		Professor p=User.login(allProfList,username, password);//find specific student obj
+		Professor p=Professor.login(allProfList,username, password);//find specific student obj
 		p.optionPage();
 	}
 	/**
