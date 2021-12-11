@@ -68,7 +68,7 @@ public class Controller {
     	String username = input.next();
     	System.out.println("password: ");
     	String password = input.next();
-		Admin a=User.login(allAdminList,username, password);//find specific student obj
+		Admin a=Admin.login(allAdminList,username, password);//find specific student obj
 		a.optionPage();
 	}
 }
