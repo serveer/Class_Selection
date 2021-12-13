@@ -2,10 +2,19 @@ import java.util.*;
 
 public class Professor extends User {
 	private static Scanner input = new Scanner(System.in);
-	public Map <Course,Student[]> profCourses= new HashMap<Course,Student[]>();
+	public static ArrayList<Professor> allList=new ArrayList<Professor>();
+	public Map <Course,ArrayList <Student>> profCourses= new HashMap<Course,ArrayList <Student>>();
 	public Professor(String name, int id, String username, String password) {
 		super(name, id, username, password);
 	}
+	public static Professor login(String username,String password) {
+		for (Professor a:allList){
+			if (a.getUsername().contentEquals(username)&&a.getPassword().contentEquals(password))
+				return a;
+		}
+		System.out.println("Wrong username or password");
+		return null;
+	} 
 	public void optionPage() {
 		System.out.println("1.view given courses");
 		System.out.println("2.view student list of given courses");
@@ -27,7 +36,7 @@ public class Professor extends User {
 	}
 	public void viewProfCourses() {
 		for (Course c:profCourses.keySet()) {
-    		c.getAllInfo();
+    		System.out.println(c.getAllInfo());
     	}
 	}
 	
@@ -45,34 +54,31 @@ public class Professor extends User {
 			//course of interest
 			Course c=Course.findCourse(id);
 			if (checkExists(c)) {
-				//withdraw course to stuCourses
-				profCourses.remove(c);
+				System.out.println("Students in this course are: ");
+				for (Student s: profCourses.get(c)) {
+					System.out.println(s.getName()+" "+s.getID());
+				}
 			}else {
 				System.out.println("Course not in list. ");
 			}
 			//get next input
-			System.out.println("Please select course id to wtihdraw or enter 'q' to quit");
+			System.out.println("Please select course id to check student list or enter 'q' to quit");
 			id=input.next();
 		}
 	}
-	public static Professor login(ArrayList<Professor> userList,String username,String password) {
-		for (Professor p:userList){
-			if (p.getUsername().contentEquals(username)&&p.getPassword().contentEquals(password))
-				return p;
-		}
-		System.out.println("Wrong username or password");
-		return null;
-	}
+	
 	/**
 	 * 
 	 * @param name of prof
 	 * @return prof object
 	 */
 	public static Professor findProf(String name) {
-		for (Professor p:Controller.allProfList){
-			if (p.getName().contentEquals(name))
-				return p;
+		for (User p:Professor.allList){
+			Professor prof=(Professor)p;
+			if (prof.getName().contentEquals(name))
+				return prof;
 		}
+		System.out.println(name+" not found");
 		return null;
 	}
 	/**
@@ -85,5 +91,28 @@ public class Professor extends User {
 			}
 		}
 		return false;
+	}
+	/**
+	 * check if course is in conflict with courses prof teaches
+	 */
+	public boolean checkTime(Course course) {
+		for (Course c:profCourses.keySet()) {
+			if (c.compareTo(course)==0) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * check which course is in conflict
+	 */
+	public Course conflictCourse(Course course) {
+		for (Course c:profCourses.keySet()) {
+			if (c.compareTo(course)==0) {
+				return c;
+			}
+		}
+		return null;
 	}
 }

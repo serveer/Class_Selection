@@ -5,10 +5,8 @@ public class Controller {
 	//create scanner object
 	private static Scanner input = new Scanner(System.in);
 	public static ArrayList<Course> allCourseList=new ArrayList<Course>();
-	public static ArrayList<Student> allStuList=new ArrayList<Student>();
-	public static ArrayList<Professor> allProfList=new ArrayList<Professor>();
-	public static ArrayList<Admin> allAdminList=new ArrayList<Admin>();
 	public static void main(String[] args) {
+		FileInfoReader.setUp("courseInfo.txt", "profInfo.txt", "studentInfo.txt", "adminInfo.txt");
 		loginpage();
 	}
 	/**
@@ -44,7 +42,7 @@ public class Controller {
     	String username = input.next();
     	System.out.println("password: ");
     	String password = input.next();
-		Student s=Student.login(allStuList,username, password);//find specific student obj
+		Student s=(Student)Student.login(username, password);//find specific student obj
 		s.optionPage();
 	}
 	/**
@@ -56,7 +54,7 @@ public class Controller {
     	String username = input.next();
     	System.out.println("password: ");
     	String password = input.next();
-		Professor p=Professor.login(allProfList,username, password);//find specific student obj
+		Professor p=(Professor)Professor.login(username, password);//find specific student obj
 		p.optionPage();
 	}
 	/**
@@ -68,7 +66,9 @@ public class Controller {
     	String username = input.next();
     	System.out.println("password: ");
     	String password = input.next();
-		Admin a=Admin.login(allAdminList,username, password);//find specific student obj
+		Admin a=(Admin)User.login(username, password);//find specific student obj
 		a.optionPage();
 	}
+	
+	
 }

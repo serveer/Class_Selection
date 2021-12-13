@@ -2,6 +2,7 @@ import java.util.*;
 
 public class Student extends User {
 	private static Scanner input = new Scanner(System.in);
+	public static ArrayList<Student> allList=new ArrayList<Student>();
 	public Map <Course,String> stuCourses= new HashMap<Course,String>();
 	public Student(String name, int id, String username, String password, Map <Course,String> stuCourses) {
 		super(name, id, username, password);
@@ -24,8 +25,6 @@ public class Student extends User {
 		switch(admin_c) {
 		case 1:	//view all course in courselist		
 			viewAllCourses();
-			System.out.println("Exit?");
-			input.next();
 			exit();
 			break;
 		case 2://register in a course
@@ -63,7 +62,7 @@ public class Student extends User {
 			//add course to stuCourses
 			stuCourses.put(c,null);
 			//add 1 to student count
-			c.addStudent();
+			c.addStudent(this);
 			//get next input
 			System.out.println("Please select course id to add or enter 'q' to quit");
 			id=input.next();
@@ -74,7 +73,7 @@ public class Student extends User {
 	 */
 	public void viewStuCourses() {
 		for (Course c:stuCourses.keySet()) {
-    		c.getAllInfo();
+    		System.out.println(c.getAllInfo());
     	}
 	}
 	/**
@@ -107,20 +106,20 @@ public class Student extends User {
 	 * view all student courses and their grades
 	 */
 	public void viewGrades() {
+		System.out.println("Here are the courses you've taken, with your grades in letter format.");
 		for (Course c:stuCourses.keySet()) {
-			System.out.println("Here are the courses you've taken, with your grades in letter format.");
-			System.out.print("Grade of "+c.getID()+c.getCourseName()+": "+stuCourses.get(c));
+			System.out.println("Grade of "+c.getID()+c.getCourseName()+": "+stuCourses.get(c));
     	}
 	}
 	/**
-	 * student login check
+	 * student login check, method override
 	 * @param userList
 	 * @param username
 	 * @param password
 	 * @return student object
 	 */
-	public static Student login(ArrayList<Student> userList,String username,String password) {
-		for (Student s:userList){
+	public static Student login(String username,String password) {
+		for (Student s:allList){
 			if (s.getUsername().contentEquals(username)&&s.getPassword().contentEquals(password))
 				return s;
 		}
@@ -137,5 +136,19 @@ public class Student extends User {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * 
+	 * @param name of student
+	 * @return student object
+	 */
+	public static Student findStu(String name) {
+		for (User p:allList){
+			if (p.getName().contentEquals(name))
+				return (Student)p;
+		}
+		System.out.println("Student not found");
+		return null;
 	}
 }
