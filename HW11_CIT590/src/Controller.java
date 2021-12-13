@@ -42,7 +42,7 @@ public class Controller {
     	String username = input.next();
     	System.out.println("password: ");
     	String password = input.next();
-		Student s=(Student)Student.login(username, password);//find specific student obj
+		Student s=Student.login(username, password);//find specific student obj
 		s.optionPage();
 	}
 	/**
@@ -54,7 +54,7 @@ public class Controller {
     	String username = input.next();
     	System.out.println("password: ");
     	String password = input.next();
-		Professor p=(Professor)Professor.login(username, password);//find specific student obj
+		Professor p=Professor.login(username, password);//find specific student obj
 		p.optionPage();
 	}
 	/**
@@ -66,7 +66,7 @@ public class Controller {
     	String username = input.next();
     	System.out.println("password: ");
     	String password = input.next();
-		Admin a=(Admin)User.login(username, password);//find specific student obj
+		Admin a=Admin.login(username, password);//find specific student obj
 		a.optionPage();
 	}
 	

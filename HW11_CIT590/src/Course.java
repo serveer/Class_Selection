@@ -113,7 +113,7 @@ public class Course implements Comparable<Course>{
 		int otherStartHr=Integer.parseInt(course.getStartTime().substring(0, 2));
 		int otherEndHr=Integer.parseInt(course.getEndTime().substring(0, 2));
 		if (days.substring(0, 2).equals(course.getDays().substring(0, 2))) {
-			if (startHr==otherStartHr || endHr==otherEndHr) {
+			if (!(startHr>=otherEndHr || endHr<=otherStartHr)) {
 				return 0;
 			}
 		}

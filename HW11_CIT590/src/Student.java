@@ -151,4 +151,46 @@ public class Student extends User {
 		System.out.println("Student not found");
 		return null;
 	}
+	/**
+	 * 
+	 * @param username to check
+	 * @return if the username already exists
+	 */
+	public static boolean checkUsernameExist(String username) {
+		for (Student u:allList) {
+			if (u.getUsername().equals(username)){
+				System.out.println("Username exists");
+				return true;
+			}
+		}
+		return false;
+	}
+	/**
+	 * 
+	 * @param password to check
+	 * @return if the password already exists
+	 */
+	public static boolean checkPasswordExist(String password) {
+		for (Student u:allList) {
+			if (u.getPassword().equals(password)){
+				System.out.println("Password exists");
+				return true;
+			}
+		}
+		return false;
+	}
+	/**
+	 * 
+	 * @param id to check
+	 * @return if the ID already exists
+	 */
+	public static boolean checkIDExist(int ID) {
+		for (Student u:allList) {
+			if (u.getID()==ID){
+				System.out.println("ID exists");
+				return true;
+			}
+		}
+		return false;
+	}
 }
