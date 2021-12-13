@@ -33,18 +33,31 @@ public abstract class User {
 			System.out.println(cour.getAllInfo());
 		}
 	}
-	
+	/**
+	 * check if input is q
+	 * @param input user input
+	 * @return true if q
+	 */
 	public boolean ifExit(String input) {
 		if (input.equals("q")){
 			return true;
 		}
 		return false;
 	}
+	/**
+	 * Exercise exit action if input q
+	 * @param input user input
+	 */
 	public void checkExit(String input) {
 		if (input.equals("q")){
 			exit();
 		}
 	}
+	/**
+	 * check if course exists
+	 * @param course course object
+	 * @return true if exists in courselist
+	 */
 	public boolean checkExists(Course course) {
 		for (Course c:Controller.allCourseList) {
 			if (course.equals(c)) {
