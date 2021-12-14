@@ -11,23 +11,17 @@ class StudentTest {
 	Student student;
 	@BeforeEach
 	void setUp() throws Exception {
-		public static ArrayList<Student> allList=new ArrayList<Student>();
-		public Map <Course,String> stuCourses= new HashMap<Course,String>();
+		//setup
+		FileInfoReader.setUp("courseInfo.txt", "profInfo.txt", "studentInfo.txt", "adminInfo.txt");
+		Map <Course,String> stuCourses= new HashMap<Course,String>();
 		String name = "Bob";
 		int id = 003;
 		String username = "bbbb";
 		String password = "password";
-		student = new Student(name, id, username, password, stuCourses) {
-		}
+		student = new Student(name, id, username, password, stuCourses);
 	}
 
 	@Test
-	void testViewStuCourses() {
-		fail("Not yet implemented");
-	}
-	void testViewGrades() {
-		
-	}
 	void testCheckExists() {
 		Professor lecturer = new Professor("Brandon",001,"brandon","123");
 		Course course = new Course("CIS545","Big Data",lecturer,"MW","12:30","13:30",50);
@@ -40,9 +34,8 @@ class StudentTest {
 		assertTrue(Student.checkUsernameExist("StudentName1"));
 		assertFalse(Student.checkUsernameExist("Tom"));
 	}
-	void testCheckPasswordExist() {
-		assertTrue(Student.checkPasswordExist("password590"));
-		assertFalse(Student.checkPasswordExist("Tom"));
+	void testLogin() {
+		assertEquals(Student.findStu("StudentName1"),Student.login("testStudent01", "password590"));
 	}
 	void  testCheckIDExist() {
 		assertTrue(Student.checkIDExist(001));

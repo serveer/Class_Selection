@@ -1,5 +1,8 @@
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -7,7 +10,9 @@ class CourseTest {
 	Course course;
 	@BeforeEach
 	void setUp() throws Exception {
-		//initialize movie trivia object
+		//setup
+		FileInfoReader.setUp("courseInfo.txt", "profInfo.txt", "studentInfo.txt", "adminInfo.txt");
+		//initialize student object
 		String ID = "CIT590";
 		String courseName = "Programming Languages and Techniques";
 		Professor lecturer = new Professor("Brandon",001,"brandon","123");
@@ -19,34 +24,25 @@ class CourseTest {
 		course = new Course (ID,courseName,lecturer, days,startTime,endTime,capacity);
 	}
 	@Test
-
-	void testGetters() {
-		assertEquals("CIT590",course.getID());
-		assertEquals("Programming Languages and Techniques",course.getCourseName());
-		assertEquals("Brandon",course.getLecturer());
-		assertEquals("MW",course.getDays());
-		assertEquals("12:00",course.getStartTime());
-		assertEquals("13:00",course.getEndTime());
-		assertEquals(10,course.getCapacity());
-		assertEquals(0,course.getStuCount());
-		
-	}
-
-	void testSetters() {
-		course.setStuCount(8);
-		assertEquals(8,course.getStuCount());
-	}
 	void testFindCourse() {
-		assertEquals("CIT590",course.findCourse(this.ID).getID());
+		assertEquals("CIT590",Course.findCourse("CIT590").getID());
 	}
 	void testCompareTo() {
-		Course course1("CIS545","Big Data",lecturer,"MW","12:30","13:30",50);
+		Professor lecturer = new Professor("Brandon",001,"brandon","123");
+		Course course1=new Course("CIS545","Big Data",lecturer,"MW","12:30","13:30",50);
 		assertEquals(0,course.compareTo(course1));
 	}
 	void testAddStudent() {
-		Student s = new Student(003; "Bob"; "bbbb"; "password"; "CIS191: A", "CIS320: A"); 
+		Map <Course,String> stuCourses= new HashMap<Course,String>();
+		Course course=Course.findCourse("CIS320");
+		stuCourses.put(Course.findCourse("CIS191"), "A");
+		stuCourses.put(course, "A");
+		Student s = new Student("Bob",003, "bbbb", "password590", stuCourses);
 		course.addStudent(s);
 		assertEquals(1,course.getStuCount());
+	}
+	void testCheckCourseExist() {
+		assertFalse(Course.checkCourseExist("CIT111"));
 	}
 		
 	

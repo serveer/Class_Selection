@@ -9,7 +9,7 @@ class AdminTest {
 	Admin admin;
 	@BeforeEach
 	void setUp() throws Exception {
-		public static ArrayList<Admin> allList=new ArrayList<Admin>();
+		FileInfoReader.setUp("courseInfo.txt", "profInfo.txt", "studentInfo.txt", "adminInfo.txt");
 		String name = "Brandon";
 		int id = 101;
 		String username = "brandon";
@@ -18,22 +18,22 @@ class AdminTest {
 	}
 
 	@Test
-	void test() {
-		fail("Not yet implemented");
+	void testDelStu() {
+		admin.delStu("StudentName1");
+		assertEquals(1,Student.allList.size());
+		
+	}
+	void testDelProf() {
+		assertEquals(32,Student.allList.size());
+		admin.delProf("Harry Smith");
+		assertEquals(31,Student.allList.size());
+		
 	}
 	void testCheckN() {
 		assertTrue(admin.checkN("n"));
 	}
-	void testCheckUsernameExist() {
-		assertTrue(Admin.checkUsernameExist("admin01"));
-		assertFalse(Admin.checkUsernameExist("Zihu"));
-	}
-	void testCheckPasswordExist() {
-		assertTrue(Admin.checkPasswordExist("password590"));
-		assertFalse(Admin.checkPasswordExist("askhdjka"));
-	}
-	void testCheckIDExist() {
-		assertTrue(Admin.checkIDExist(001));
-		assertFalse(Admin.checkIDExist(456));
+	void testLogin() {
+		assertEquals(1,Admin.login("admin01", "password590").getID());
 	}
 }
+
