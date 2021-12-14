@@ -1,6 +1,11 @@
-
+/**
+ * user superclass for common method and variable
+ * @author jonathan
+ *
+ */
 
 public abstract class User {
+	//user variables
 	private String name,username,password;
 	private int id;
 	public User(String name, int id,String username,String password) {

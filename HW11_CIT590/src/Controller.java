@@ -1,17 +1,25 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-
+/**
+ * main class
+ * @author Jonathan Shaw and Zihu Xu
+ *
+ */
 public class Controller {
 	//create scanner object
 	private static Scanner input = new Scanner(System.in);
+	/**
+	 * list of all courses
+	 */
 	public static ArrayList<Course> allCourseList=new ArrayList<Course>();
 	public static void main(String[] args) {
+		//read file
 		FileInfoReader.setUp("courseInfo.txt", "profInfo.txt", "studentInfo.txt", "adminInfo.txt");
+		//login
 		loginpage();
 	}
 	/**
 	 * print login options for user
-	 * @return user option
 	 */
 	public static void loginpage() {
 		//print login options

@@ -1,8 +1,16 @@
 import java.util.*;
-
+/**
+ * student user
+ * @author Jonathan Shaw and Zihu Xu
+ *
+ */
 public class Student extends User {
 	private static Scanner input = new Scanner(System.in);
+	/**
+	 * list of all students
+	 */
 	public static ArrayList<Student> allList=new ArrayList<Student>();
+	//student's enrolled courses
 	public Map <Course,String> stuCourses= new HashMap<Course,String>();
 	public Student(String name, int id, String username, String password, Map <Course,String> stuCourses) {
 		super(name, id, username, password);
@@ -93,7 +101,7 @@ public class Student extends User {
 	}
 	/**
 	 * print all student's enrolled courses and get their course id
-	 * @return
+	 * @return user input, should be ID
 	 */
 	public String pickClass() {
 		//view all enrolled courses
@@ -142,10 +150,9 @@ public class Student extends User {
 	}
 	/**
 	 * student login check, method override
-	 * @param userList
-	 * @param username
-	 * @param password
-	 * @return student object
+	 * @param username input
+	 * @param password input
+	 * @return student object based on student username
 	 */
 	public static Student login(String username,String password) {
 		for (Student s:allList){
@@ -156,7 +163,9 @@ public class Student extends User {
 		return null;
 	} 
 	/**
-	 * check if course is in student enrolled courses
+	 * 
+	 * @param course to compare
+	 * @return true if course exists
 	 */
 	public boolean checkExists(Course course) {
 		for (Course c:stuCourses.keySet()) {
@@ -228,7 +237,9 @@ public class Student extends User {
 		return false;
 	}
 	/**
-	 * check if course is in conflict with courses student enrolled
+	 * 
+	 * @param course to compare
+	 * @return true if time conflict
 	 */
 	public boolean checkTime(Course course) {
 		//iterate through each course
@@ -239,9 +250,10 @@ public class Student extends User {
 		}
 		return false;
 	}
-	
 	/**
-	 * check which course is in conflict
+	 * 
+	 * @param course to compare
+	 * @return course in student enrolled course that is in conflict
 	 */
 	public Course conflictCourse(Course course) {
 		//similar to checkTime method but return which course is in conflict

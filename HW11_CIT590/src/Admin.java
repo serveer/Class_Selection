@@ -3,9 +3,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-
+/**
+ * admin object
+ * @author Jonathan Shaw and Zihu Xu
+ *
+ */
 public class Admin extends User {
 	private static Scanner input = new Scanner(System.in);
+	/**
+	 * list of all admin
+	 */
 	public static ArrayList<Admin> allList=new ArrayList<Admin>();
 	public Admin(String name, int id, String username, String password) {
 		super(name, id, username, password);

@@ -1,5 +1,10 @@
-
+/**
+ * course object to select
+ * @author Jonathan Shaw and Zihu Xu
+ * 
+ */
 public class Course implements Comparable<Course>{
+	//course variables
 	private String ID;
 	private String courseName;
 	private Professor lecturer;
@@ -18,66 +23,31 @@ public class Course implements Comparable<Course>{
 		this.endTime=endTime;
 		this.capacity=capacity;
 	}
-	/**
-	 * getter
-	 * @return Id
-	 */
+	//getters
 	public String getID() {
 		return ID;
 	}
-	/**
-	 * getter
-	 * @return course name
-	 */
 	public String getCourseName() {
 		return courseName;
 	}
-	/**
-	 * getter
-	 * @return professor name
-	 */
 	public Professor getLecturer() {
 		return lecturer;
 	}
-	/**
-	 * getter
-	 * @return days
-	 */
 	public String getDays() {
 		return days;
 	}
-	/**
-	 * getter
-	 * @return starttime
-	 */
 	public String getStartTime() {
 		return startTime;
 	}
-	/**
-	 * getter
-	 * @return endtime
-	 */
 	public String getEndTime() {
 		return endTime;
 	}
-	/**
-	 * getter
-	 * @return capacity
-	 */
 	public int getCapacity() {
 		return capacity;
 	}
-	/**
-	 * getter
-	 * @return student count
-	 */
 	public int getStuCount() {
 		return stuCount;
 	}
-	/**
-	 * setter
-	 * @param i student count to set to
-	 */
 	public void setStuCount(int i) {
 		this.stuCount=i;
 	}
@@ -136,7 +106,8 @@ public class Course implements Comparable<Course>{
 		return startHr.compareTo(otherStartHr);
 	}
 	/**
-	 * if a student picks the course
+	 * 
+	 * @param s Student to be added
 	 */
 	public void addStudent(Student s) {
 		//check if course if full before adding
@@ -151,7 +122,8 @@ public class Course implements Comparable<Course>{
 	}
 	
 	/**
-	 * if a student picks the course
+	 * 
+	 * @param s Student to be removed
 	 */
 	public void removeStudent(Student s) {
 		//delete student count by one
@@ -161,7 +133,7 @@ public class Course implements Comparable<Course>{
 	}
 	/**
 	 * check if course if full
-	 * @return
+	 * @return true if course if full
 	 */
 	public boolean checkFull() {
 		//if student count is at capacity

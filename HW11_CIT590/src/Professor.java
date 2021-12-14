@@ -1,8 +1,16 @@
 import java.util.*;
-
+/**
+ * Professor user class
+ * @author Jonathan Shaw and Zihu Xu
+ *
+ */
 public class Professor extends User {
 	private static Scanner input = new Scanner(System.in);
+	/**
+	 * list of all professors
+	 */
 	public static ArrayList<Professor> allList=new ArrayList<Professor>();
+	//professor's courses and student list
 	public Map <Course,ArrayList <Student>> profCourses= new HashMap<Course,ArrayList <Student>>();
 	public Professor(String name, int id, String username, String password) {
 		super(name, id, username, password);
@@ -109,6 +117,8 @@ public class Professor extends User {
 	}
 	/**
 	 * check if course is in courselist prof teaches
+	 * @param course to add
+	 * @return true if course in professor list
 	 */
 	public boolean checkExists(Course course) {
 		//iterate through prof's courselist
@@ -123,7 +133,9 @@ public class Professor extends User {
 		return false;
 	}
 	/**
-	 * check if course is in conflict with courses prof teaches
+	 * 
+	 * @param course to compare
+	 * @return if any course is in conflict
 	 */
 	public boolean checkTime(Course course) {
 		//compare each course objects
@@ -138,7 +150,9 @@ public class Professor extends User {
 	}
 	
 	/**
-	 * check which course is in conflict
+	 * 
+	 * @param course to compare
+	 * @return course that is in conflict
 	 */
 	public Course conflictCourse(Course course) {
 		//similar to checkTime method but return which course is in conflict
