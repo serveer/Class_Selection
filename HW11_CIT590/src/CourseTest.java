@@ -36,5 +36,18 @@ class CourseTest {
 		course.setStuCount(8);
 		assertEquals(8,course.getStuCount());
 	}
+	void testFindCourse() {
+		assertEquals("CIT590",course.findCourse(this.ID).getID());
+	}
+	void testCompareTo() {
+		Course course1("CIS545","Big Data",lecturer,"MW","12:30","13:30",50);
+		assertEquals(0,course.compareTo(course1));
+	}
+	void testAddStudent() {
+		Student s = new Student(003; "Bob"; "bbbb"; "password"; "CIS191: A", "CIS320: A"); 
+		course.addStudent(s);
+		assertEquals(1,course.getStuCount());
+	}
+		
 	
 }
