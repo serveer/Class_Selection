@@ -20,6 +20,7 @@ public class Admin extends User {
 		return null;
 	} 
 	public void optionPage() {
+		//print all options
 		System.out.println("1.view all course");
 		System.out.println("2.add new course");
 		System.out.println("3.delete course");
@@ -28,6 +29,7 @@ public class Admin extends User {
 		System.out.println("6.register new student");
 		System.out.println("7.delete student");
 		System.out.println("8.Exit");
+		System.out.println("You may also come back to this page at any time by entering 'q'");
 		int admin_c=Integer.parseInt(input.next());//take in admin choice
 		input.nextLine();
 		switch(admin_c) {
@@ -36,19 +38,27 @@ public class Admin extends User {
 			exit();
 			break;
 		case 2://adding course, input all required number other than student list, automatic null list
+			//get each course info
+			//get initial course id
+			System.out.println("course id: ");
+	    	String ID = input.nextLine();
+	    	//check if it is q
+	    	this.checkExit(ID);
+			//while course is already in the course list
+			while(Course.checkCourseExist(ID)){
+				System.out.println("The course already exist, re-enter or press 'q' to quit");
+	    		System.out.println("course id: ");
+		    	ID = input.nextLine();
+		    	this.checkExit(ID);
+	    	}
 			System.out.println("course name: ");	
 	    	String courseName = input.nextLine();
+	    	//check if q
 	    	this.checkExit(courseName);
-	    	System.out.println("course id: ");
-	    	String ID = input.nextLine();
-	    	this.checkExit(ID);
 	    	System.out.println("capacity: ");
 	    	String capacityStr = input.nextLine();
 	    	this.checkExit(capacityStr);
 	    	int capacity=Integer.parseInt(capacityStr);
-	    	System.out.println("instructor: ");
-	    	String lecturer = input.nextLine();
-	    	this.checkExit(lecturer);
 	    	System.out.println("course date(eg 'MW'): ");
 	    	String days=input.nextLine();	    	  
 	    	this.checkExit(days);
@@ -58,14 +68,25 @@ public class Admin extends User {
 	    	System.out.println("end time(eg '19:00'): ");
 	    	String endTime = input.nextLine();
 	    	this.checkExit(endTime);
+	    	System.out.println("instructor: ");
+	    	String lecturer = input.nextLine();
+	    	this.checkExit(lecturer);
+	    	//if prof is not in list
 	    	if (Professor.findProf(lecturer)==null) {
+	    		System.out.println("Professor not found, ");
+	    		//add professor object and get info
 	    		addProf();
-			}	    		
+			}
+	    	//find professor object by lecturer when it exists
 	    	Professor p=Professor.findProf(lecturer);
+	    	//create new course
 	    	Course newC=new Course(ID,courseName, p, days, startTime, endTime, capacity);
+	    	//check if new course conflict with prof current course
 	    	if (p.checkTime(newC)) {
+	    		//if conflict don't add
 	    		System.out.println("New course is in conflict with other courses"+p.conflictCourse(newC).getAllInfo());
 	    	}else {
+	    		//if doesn't conflict add
 	    		Controller.allCourseList.add(newC);
 	    		System.out.println("Successfully added course"+newC.getAllInfo());
 	    	}
@@ -73,8 +94,13 @@ public class Admin extends User {
 			break;
 		case 3://delete course from course list
 			System.out.println("id of course deleting:");
-			String id=input.next();			
-			Controller.allCourseList.remove(Course.findCourse(id));
+			String id=input.next();
+			if (Course.findCourse(id)!=null) {
+				Controller.allCourseList.remove(Course.findCourse(id));
+				System.out.println("Course deleted");
+			}else {
+				System.out.println("Course not found, please try again later");
+			}
 			exit();
 			break;
 		case 4://add prof
@@ -99,11 +125,15 @@ public class Admin extends User {
 			delStu(stuName);
 			break;
 		case 8://end program and store info
-			exit();
+			Controller.loginpage();
 			break;
 		}		
 	}
+	/**
+	 * method to get prof info and add prof object
+	 */
 	public void addProf() {
+		//get prof info
 		System.out.println("Prof name: ");	
     	String name = input.nextLine();
     	this.checkExit(name);
@@ -111,6 +141,7 @@ public class Admin extends User {
     	String IDStr = input.nextLine();
     	this.checkExit(IDStr);
     	int ID=Integer.parseInt(IDStr);
+    	//while prof ID exits
     	while (Professor.checkIDExist(ID)) {
     		System.out.println("Prof id: ");
         	IDStr = input.nextLine();
@@ -120,6 +151,7 @@ public class Admin extends User {
     	System.out.println("username: ");
     	String username = input.nextLine();
     	this.checkExit(username);
+    	//while prof username exits
     	while (Professor.checkUsernameExist(username)) {
     		System.out.println("username: ");
         	username = input.nextLine();
@@ -128,26 +160,40 @@ public class Admin extends User {
     	System.out.println("password: ");
     	String password = input.nextLine();
     	this.checkExit(password);
-    	while (Professor.checkPasswordExist(password)) {
-    		System.out.println("password: ");
-        	password = input.nextLine();
-        	this.checkExit(password);
-    	}
+    	//create prof object
     	Professor p=new Professor(name, ID, username,password);
     	Professor.allList.add(p);
-    	System.out.println("Successfully added");
+    	
 	}
+	/**
+	 * delete professor
+	 * @param name of professor
+	 */
 	public void delProf(String name) {
-		Professor.allList.remove(Professor.findProf(name));
+		//check if prof exists
+		if(Professor.checkProfExist(name)) {
+			//remove if exists
+			Professor.allList.remove(Professor.findProf(name));
+    		System.out.println("Successfully deleted");
+    	}else {
+    		//do nothing otherwise
+    		System.out.println("Professor not found");
+    	}
 	}
+	/**
+	 * add student to student list
+	 */
 	public void addStu() {
+		//get student info
 		System.out.println("Student name: ");	
     	String name = input.nextLine();
+    	//check if q
     	this.checkExit(name);
     	System.out.println("Student id: ");
     	String IDStr = input.nextLine();
     	this.checkExit(IDStr);
     	int ID=Integer.parseInt(IDStr);
+    	//check if ID exists
     	while (Student.checkIDExist(ID)) {
     		System.out.println("Student id: ");
         	IDStr = input.nextLine();
@@ -157,6 +203,7 @@ public class Admin extends User {
     	System.out.println("username: ");
     	String username = input.nextLine();
     	this.checkExit(username);
+    	//check if username exists
     	while (Student.checkUsernameExist(username)) {
     		System.out.println("username: ");
         	username = input.nextLine();
@@ -165,74 +212,63 @@ public class Admin extends User {
     	System.out.println("password: ");
     	String password = input.nextLine();
     	this.checkExit(password);
-    	while (Student.checkPasswordExist(password)) {
-    		System.out.println("password: ");
-        	password = input.nextLine();
-        	this.checkExit(password);
-    	}
-    	Map <Course,String> stuCourseList= new HashMap<Course,String>(); 
-    	String courseID="";
+    	//create empty map as student course list
+    	Map <Course,String> stuCourseList= new HashMap<Course,String>();
+    	//initialize course ID to add
+    	System.out.println("Course ID, or input 'n' to stop: ");
+    	String courseID = input.nextLine();
+    	this.checkExit(courseID);
     	while (!checkN(courseID)) {
-    		System.out.println("Course ID, or input 'n' to stop: ");
+    		//check if course exists
+    		if (Course.checkCourseExist(courseID)) {
+    			//check if course full
+    			if(!Course.findCourse(courseID).checkFull()) {
+    				System.out.println("Course grade: ");
+                	String courseGrade = input.nextLine();
+                	stuCourseList.put(Course.findCourse(courseID), courseGrade);
+    			}
+      		}else {
+    			System.out.println("Course doesn't exist");
+    		}
+    		System.out.println("Course ID, or input 'n' to stop, or 'q' to quit: ");
         	courseID = input.nextLine();
         	this.checkExit(courseID);
-        	System.out.println("Course grade: ");
-        	String courseGrade = input.nextLine();
-        	stuCourseList.put(Course.findCourse(courseID), courseGrade);
     	}
+    	//create student object
     	Student s=new Student(name, ID, username,password,stuCourseList);
+    	//for each course in student's course list, add student
+    	for (Course c:stuCourseList.keySet()) {
+    		c.addStudent(s);
+    	}
+    	//add student object
     	Student.allList.add(s);
     	System.out.println("Successfully added");
 	}
+	/**
+	 * check if input is n to stop
+	 * @param input of user
+	 * @return true if n
+	 */
 	public boolean checkN(String input) {
 		if (input.equals("n")){
 			return true;
 		}
 		return false;
 	}
+	/**
+	 * delete student by name
+	 * @param name of student
+	 */
 	public void delStu(String name) {
-		Student.allList.remove(Student.findStu(name));
+		//check if student exists
+		if(Student.checkStudentExist(name)) {
+			//delete student
+			Student.allList.remove(Student.findStu(name));
+    		System.out.println("Successfully deleted");
+    	}else {
+    		//print student not found
+    		System.out.println("Student not found");
+    	}
 	}
-	/**
-	 * 
-	 * @param username to check
-	 * @return if the username already exists
-	 */
-	public static boolean checkUsernameExist(String username) {
-		for (Admin u:allList) {
-			if (u.getUsername().equals(username)){
-				System.out.println("Username exists");
-				return true;
-			}
-		}
-		return false;
-	}
-	/**
-	 * 
-	 * @param password to check
-	 * @return if the password already exists
-	 */
-	public static boolean checkPasswordExist(String password) {
-		for (Admin u:allList) {
-			if (u.getPassword().equals(password)){
-				System.out.println("Password exists");
-				return true;
-			}
-		}
-		return false;
-	}
-	/**
-	 * 
-	 * @param id to check
-	 * @return if the ID already exists
-	 */
-	public static boolean checkIDExist(int ID) {
-		for (Admin u:allList) {
-			if (u.getID()==ID){
-				System.out.println("ID exists");
-				return true;
-			}
-		}
-		return false;
-	}
+	
 }

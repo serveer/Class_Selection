@@ -21,6 +21,7 @@ public class Student extends User {
 		System.out.println("4.withdraw from course");
 		System.out.println("5.view grades");
 		System.out.println("6.Exit");
+		System.out.println("You may also come back to this page at any time by entering 'q'");
 		int admin_c=Integer.parseInt(input.next());
 		switch(admin_c) {
 		case 1:	//view all course in courselist		
@@ -54,15 +55,28 @@ public class Student extends User {
 	 */
 	public void register() {
 		//get first course to register
-		System.out.println("Please select course id to add or enter 'q' to quit");
-		String id=input.next();
+		String id=pickClass();
 		//end if enters q
 		while (!ifExit(id)) {
-			Course c=Course.findCourse(id);//course of interest
-			//add course to stuCourses
-			stuCourses.put(c,null);
-			//add 1 to student count
-			c.addStudent(this);
+			//check if course in allCourseList, avoid nullpointer
+			if (Course.checkCourseExist(id)) {
+				Course c=Course.findCourse(id);//course of interest
+				//check if course is already enrolled
+				if(checkExists(c)) {
+					System.out.println("Course already enrolled");
+				//check if time conflicts
+				}else if(checkTime(c)){
+					System.out.println("New course is in conflict with other enrolled courses"+conflictCourse(c).getAllInfo());
+				//check if course is full
+				}else if(!c.checkFull()){
+					//add course to stuCourses
+					stuCourses.put(c,null);
+				}else {	
+					//add 1 to student count
+					c.addStudent(this);
+					System.out.println("course enrolled");
+				}
+			}
 			//get next input
 			System.out.println("Please select course id to add or enter 'q' to quit");
 			id=input.next();
@@ -72,6 +86,7 @@ public class Student extends User {
 	 * print all information about this student's enrolled courses
 	 */
 	public void viewStuCourses() {
+		//print info about student courses
 		for (Course c:stuCourses.keySet()) {
     		System.out.println(c.getAllInfo());
     	}
@@ -81,10 +96,12 @@ public class Student extends User {
 	 * @return
 	 */
 	public String pickClass() {
+		//view all enrolled courses
 		System.out.println("The courses in your list: ");
 		viewStuCourses();
 		System.out.println();
-		System.out.println("Please select course id to withdraw or enter 'q' to quit");
+		//get course ID
+		System.out.println("Please select course id to enroll or enter 'q' to quit");
 		String id=input.next();
 		return id;
 	}
@@ -92,11 +109,23 @@ public class Student extends User {
 	 * iterative method for student to withdraw a course from their courselist
 	 */
 	public void withdraw() {
+		//get id
 		String id=pickClass();
+		//while id not q
 		while (!ifExit(id)) {
-			Course c=Course.findCourse(id);//course of interest
-			//withdraw course to stuCourses
-			stuCourses.remove(c);
+			//check if course in allCourseList, avoid nullpointer
+			if (Course.checkCourseExist(id)) {
+				Course c=Course.findCourse(id);//course of interest
+				//if course not in student enrolled course list
+				if(!checkExists(c)) {
+					System.out.println("Course not enrolled");
+				}else {
+					//withdraw course to stuCourses
+					stuCourses.remove(c);
+					//add 1 to student count
+					c.removeStudent(this);
+				}
+			}
 			//get next input
 			System.out.println("Please select course id to wtihdraw or enter 'q' to quit");
 			id=input.next();
@@ -152,14 +181,13 @@ public class Student extends User {
 		return null;
 	}
 	/**
-	 * 
-	 * @param username to check
-	 * @return if the username already exists
+	 * check if professor exists to be deleted
+	 * @param name of professor
+	 * @return true if p exists
 	 */
-	public static boolean checkUsernameExist(String username) {
-		for (Student u:allList) {
-			if (u.getUsername().equals(username)){
-				System.out.println("Username exists");
+	public static boolean checkStudentExist(String name) {
+		for (Student s: allList) {
+			if (s.getName().equals(name)) {
 				return true;
 			}
 		}
@@ -167,13 +195,16 @@ public class Student extends User {
 	}
 	/**
 	 * 
-	 * @param password to check
-	 * @return if the password already exists
+	 * @param username to check
+	 * @return if the username already exists
 	 */
-	public static boolean checkPasswordExist(String password) {
+	public static boolean checkUsernameExist(String username) {
+		//check each student
 		for (Student u:allList) {
-			if (u.getPassword().equals(password)){
-				System.out.println("Password exists");
+			//if one username matches
+			if (u.getUsername().equals(username)){
+				System.out.println("Username exists");
+				//return true
 				return true;
 			}
 		}
@@ -185,12 +216,40 @@ public class Student extends User {
 	 * @return if the ID already exists
 	 */
 	public static boolean checkIDExist(int ID) {
+		//check each student
 		for (Student u:allList) {
+			//if one ID matches
 			if (u.getID()==ID){
 				System.out.println("ID exists");
+				//return true
 				return true;
 			}
 		}
 		return false;
+	}
+	/**
+	 * check if course is in conflict with courses student enrolled
+	 */
+	public boolean checkTime(Course course) {
+		//iterate through each course
+		for (Course c:stuCourses.keySet()) {
+			if (c.compareTo(course)==0) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * check which course is in conflict
+	 */
+	public Course conflictCourse(Course course) {
+		//similar to checkTime method but return which course is in conflict
+		for (Course c:stuCourses.keySet()) {
+			if (c.compareTo(course)==0) {
+				return c;
+			}
+		}
+		return null;
 	}
 }

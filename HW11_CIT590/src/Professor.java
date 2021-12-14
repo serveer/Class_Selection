@@ -19,6 +19,7 @@ public class Professor extends User {
 		System.out.println("1.view given courses");
 		System.out.println("2.view student list of given courses");
 		System.out.println("3.Exit");
+		System.out.println("You may also come back to this page at any time by entering 'q'");
 		int admin_c=Integer.parseInt(input.next());
 		switch(admin_c) {
 		case 1://view all course the Prof is has
@@ -34,12 +35,21 @@ public class Professor extends User {
 			break;
 		}			
 	}
+	
+	/**
+	 * print info about each course
+	 */
 	public void viewProfCourses() {
+		//iterate through about each course 
 		for (Course c:profCourses.keySet()) {
+			//print info about each course
     		System.out.println(c.getAllInfo());
     	}
 	}
-	
+	/**
+	 * get user input for class
+	 * @return id of class to view
+	 */
 	public String pickClass() {
 		System.out.println("The courses in your list: ");
 		viewProfCourses();
@@ -48,18 +58,31 @@ public class Professor extends User {
 		String id=input.next();
 		return id;
 	}
+	/**
+	 * view student in certain course
+	 */
 	public void viewStudents() {
 		String id=pickClass();
+		//while id is not q, loop
 		while (!ifExit(id)) {
-			//course of interest
-			Course c=Course.findCourse(id);
-			if (checkExists(c)) {
-				System.out.println("Students in this course are: ");
-				for (Student s: profCourses.get(c)) {
-					System.out.println(s.getName()+" "+s.getID());
+			//find course only if course is in allcourselist
+			if (Course.checkCourseExist(id)) {
+				//course of interest
+				Course c=Course.findCourse(id);
+				//check if course in prof courseliset
+				if (checkExists(c)) {
+					//print student info
+					System.out.println("Students in this course are: ");
+					for (Student s: profCourses.get(c)) {
+						System.out.println(s.getName()+" "+s.getID());
+					}
+				//check if course in all course list
+				}else if (!Course.checkCourseExist(id)){
+					System.out.println("Course not found. ");
+				}else {
+					//print message if not in list
+					System.out.println("Course not in list. ");
 				}
-			}else {
-				System.out.println("Course not in list. ");
 			}
 			//get next input
 			System.out.println("Please select course id to check student list or enter 'q' to quit");
@@ -73,11 +96,14 @@ public class Professor extends User {
 	 * @return prof object
 	 */
 	public static Professor findProf(String name) {
-		for (User p:Professor.allList){
-			Professor prof=(Professor)p;
-			if (prof.getName().contentEquals(name))
-				return prof;
+		//itereate through allProf list
+		for (Professor p:Professor.allList){
+			//check which prof has the same name
+			if (p.getName().contentEquals(name))
+				//return professor object
+				return p;
 		}
+		//return null if not found
 		System.out.println(name+" not found");
 		return null;
 	}
@@ -85,22 +111,29 @@ public class Professor extends User {
 	 * check if course is in courselist prof teaches
 	 */
 	public boolean checkExists(Course course) {
+		//iterate through prof's courselist
 		for (Course c:profCourses.keySet()) {
+			//if course found
 			if (course.equals(c)) {
+				//return true
 				return true;
 			}
 		}
+		//if not found return false
 		return false;
 	}
 	/**
 	 * check if course is in conflict with courses prof teaches
 	 */
 	public boolean checkTime(Course course) {
+		//compare each course objects
 		for (Course c:profCourses.keySet()) {
+			//if overlap return true
 			if (c.compareTo(course)==0) {
 				return true;
 			}
 		}
+		//return false
 		return false;
 	}
 	
@@ -108,6 +141,7 @@ public class Professor extends User {
 	 * check which course is in conflict
 	 */
 	public Course conflictCourse(Course course) {
+		//similar to checkTime method but return which course is in conflict
 		for (Course c:profCourses.keySet()) {
 			if (c.compareTo(course)==0) {
 				return c;
@@ -121,23 +155,12 @@ public class Professor extends User {
 	 * @return if the username already exists
 	 */
 	public static boolean checkUsernameExist(String username) {
+		//check each prof
 		for (Professor u:allList) {
+			//if one username matches
 			if (u.getUsername().equals(username)){
 				System.out.println("Username exists");
-				return true;
-			}
-		}
-		return false;
-	}
-	/**
-	 * 
-	 * @param password to check
-	 * @return if the password already exists
-	 */
-	public static boolean checkPasswordExist(String password) {
-		for (Professor u:allList) {
-			if (u.getPassword().equals(password)){
-				System.out.println("Password exists");
+				//return true
 				return true;
 			}
 		}
@@ -149,12 +172,32 @@ public class Professor extends User {
 	 * @return if the ID already exists
 	 */
 	public static boolean checkIDExist(int ID) {
+		//check each prof
 		for (Professor u:allList) {
+			//if one ID matches
 			if (u.getID()==ID){
 				System.out.println("ID exists");
+				//return true
 				return true;
 			}
 		}
+		return false;
+	}
+	/**
+	 * check if professor exists to be deleted
+	 * @param name of professor
+	 * @return true if p exists
+	 */
+	public static boolean checkProfExist(String name) {
+		//check if prof is in allProf list by prof name
+		for (Professor p: allList) {
+			//if one prof has same name
+			if (p.getName().equals(name)) {
+				//return true
+				return true;
+			}
+		}
+		//return false otherwise
 		return false;
 	}
 }
